@@ -41,4 +41,10 @@ class UserViewModel(application: Application) : AndroidViewModel(application) {
             requireNotNull(dao).updatePerson(newPerson)
         }
     }
+
+    fun delete(person: Person) {
+        viewModelScope.launch(Dispatchers.IO) {
+            requireNotNull(dao).deletePerson(person)
+        }
+    }
 }

@@ -8,14 +8,12 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.Button
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import co.composables.roomtutorial.ui.theme.RoomTutorialTheme
@@ -49,7 +47,10 @@ class MainActivity : ComponentActivity() {
                         items(users) {
                             PersonRow(it, onClick = {
                                 viewModel.updateName(it)
-                            })
+                            }, onDeleteClick = {
+                                viewModel.delete(it)
+                            }
+                            )
                         }
                     }
                 }
@@ -58,13 +59,20 @@ class MainActivity : ComponentActivity() {
     }
 
     @Composable
-    fun PersonRow(person: Person, onClick: () -> Unit) {
+    fun PersonRow(person: Person, onClick: () -> Unit, onDeleteClick: () -> Unit) {
         Surface(Modifier
             .fillMaxWidth()
             .clickable { onClick() }
-            .padding(vertical = 10.dp, horizontal = 16.dp)
+            .padding(vertical = 10.dp)
+            .padding(start = 16.dp)
         ) {
-            Text("${person.firstName} ${person.lastName}")
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Text("${person.firstName} ${person.lastName}")
+                Spacer(Modifier.weight(1f))
+                IconButton(onDeleteClick) {
+                    Icon(painterResource(R.drawable.ic_round_delete_24), contentDescription = null)
+                }
+            }
         }
     }
 }

@@ -18,8 +18,11 @@ interface PersonDao {
 
     @Insert
     suspend fun insertPeople(vararg people: Person)
+
     @Update
     fun updatePerson(newPerson: Person)
+    @Delete
+    fun deletePerson(person: Person)
 }
 
 @Database(entities = [Person::class], version = 1)
