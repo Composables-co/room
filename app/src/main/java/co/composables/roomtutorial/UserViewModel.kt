@@ -18,6 +18,12 @@ class UserViewModel(application: Application) : AndroidViewModel(application) {
     init {
         viewModelScope.launch(Dispatchers.IO) {
             dao = MyDatabase.getInstance(application).personDao()
+
+            requireNotNull(dao).getAllPeople().collect { people ->
+                withContext(Dispatchers.Main) {
+                    users.value = people
+                }
+            }
         }
     }
 
@@ -29,11 +35,5 @@ class UserViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     fun refresh() {
-        viewModelScope.launch(Dispatchers.IO) {
-            val people = requireNotNull(dao).getAllPeople()
-            withContext(Dispatchers.Main) {
-                users.value = people
-            }
-        }
     }
 }

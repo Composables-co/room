@@ -14,10 +14,10 @@ data class Person(
 @Dao
 interface PersonDao {
     @Query("SELECT * FROM person")
-    fun getAllPeople(): List<Person>
+    fun getAllPeople(): Flow<List<Person>>
 
     @Insert
-    fun insertPeople(vararg people: Person)
+    suspend fun insertPeople(vararg people: Person)
 }
 
 @Database(entities = [Person::class], version = 1)
