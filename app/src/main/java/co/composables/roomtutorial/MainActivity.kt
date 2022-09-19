@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -43,13 +44,12 @@ class MainActivity : ComponentActivity() {
                                 Button(onClick = { viewModel.addUser() }) {
                                     Text("Add Random Person")
                                 }
-                                Button(onClick = { viewModel.refresh() }) {
-                                    Text("Refresh")
-                                }
                             }
                         }
                         items(users) {
-                            PersonRow(it)
+                            PersonRow(it, onClick = {
+                                viewModel.updateName(it)
+                            })
                         }
                     }
                 }
@@ -58,10 +58,12 @@ class MainActivity : ComponentActivity() {
     }
 
     @Composable
-    fun PersonRow(person: Person) {
+    fun PersonRow(person: Person, onClick: () -> Unit) {
         Surface(Modifier
             .fillMaxWidth()
-            .padding(vertical = 10.dp, horizontal = 16.dp)) {
+            .clickable { onClick() }
+            .padding(vertical = 10.dp, horizontal = 16.dp)
+        ) {
             Text("${person.firstName} ${person.lastName}")
         }
     }

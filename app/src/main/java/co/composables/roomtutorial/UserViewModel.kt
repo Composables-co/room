@@ -34,6 +34,11 @@ class UserViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-    fun refresh() {
+    fun updateName(person: Person) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val newPerson =
+                person.copy(firstName = firstNames.random(), lastName = lastNames.random())
+            requireNotNull(dao).updatePerson(newPerson)
+        }
     }
 }
